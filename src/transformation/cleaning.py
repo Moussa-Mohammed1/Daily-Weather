@@ -32,9 +32,12 @@ def clean_cities(df: pd.DataFrame) -> pd.DataFrame:
 
     return cleaned
 
-def clean_weather(weather_data: list) -> pd.DataFrame:
+def clean_weather(weather_data: list | pd.DataFrame) -> pd.DataFrame:
     
     rows = []
+
+    if isinstance(weather_data, pd.DataFrame):
+        weather_data = weather_data.to_dict(orient="records")
 
     for city_data in weather_data:
 
