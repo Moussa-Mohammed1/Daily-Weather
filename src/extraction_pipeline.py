@@ -1,6 +1,7 @@
 from extraction.cities import extract_raw_cities, save_bronze_cities
 from extraction.weather_api import fetch_weather
 import json
+from transformation.cleaning import clean_cities, clean_weather
 
 def main():
     cities = extract_raw_cities("data/source/ma.csv")
@@ -32,5 +33,4 @@ def main():
                 indent=4
             )
     print("Weather extracted and saved completely.")
-
 
