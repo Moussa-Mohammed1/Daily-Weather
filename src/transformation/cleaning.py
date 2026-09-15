@@ -87,3 +87,9 @@ def clean_weather(weather_data: list | pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
+
+def save_cities_clean(cities_clean: pd.DataFrame, output_path: str):
+    cities_clean.to_csv(output_path, index=False)
+def save_weather_clean(weather_clean: pd.DataFrame, output_path: str):
+    weather_clean.to_csv(output_path, index=False)
+    
