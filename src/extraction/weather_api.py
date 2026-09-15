@@ -8,7 +8,7 @@ def fetch_weather(lat, lng):
     url = os.getenv("API_URL")
     params = {
         "latitude": lat,
-        "langitude": lng,
+        "longitude": lng,
         "daily": [
             "temperature_2m_max",
             "temperature_2m_min",
