@@ -18,3 +18,16 @@ def test_join_weather_cities():
     assert isinstance(joined, pd.DataFrame)
     assert not joined.empty
     assert "city" in joined
+
+
+def test_clean_cities_removes_invalid_rows():
+    cities = pd.DataFrame({
+        "city": [" Casablanca ", "Rabat", "Rabat", None],
+        "lat": ["33.5", 34.0, 34.0, 10],
+        "lng": ["-7.6", -6.8, -6.8, 200],
+    })
+
+    cleaned = clean_cities(cities)
+
+    assert list(cleaned["city"]) == ["Casablanca", "Rabat"]
+    assert cleaned["latitude"].dtype.kind in "fi"
