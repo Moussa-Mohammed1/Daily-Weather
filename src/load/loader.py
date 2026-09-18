@@ -1,8 +1,10 @@
+from pathlib import Path
+
 import pandas as pd
 from sqlalchemy import text
 from src.load.connection import engine
 
-GOLD_PATH = "data/gold/weather_features.csv"
+GOLD_PATH = Path(__file__).resolve().parents[2] / "data" / "gold" / "weather_features.csv"
 
 def load_data():
     df = pd.read_csv(GOLD_PATH)

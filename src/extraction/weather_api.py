@@ -27,5 +27,3 @@ def fetch_weather(lat, lng):
     )
     response.raise_for_status()
     return response.json()
-
-fetch_weather(lat=33.6833, lng=33.6833)
