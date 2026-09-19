@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +11,12 @@ from src.extraction_pipeline import main as extract
 from src.transformation_pipeline import clean_and_join, create_features_file
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(
+    os.environ.get(
+        "PROJECT_ROOT",
+        Path(__file__).resolve().parents[2],
+    )
+)
 GOLD_PATH = PROJECT_ROOT / "data" / "gold" / "weather_features.csv"
 
 
@@ -37,14 +43,14 @@ with DAG(
     catchup=False,
     default_args={
         "retries": 2,
-        "retry_delay": timedelta(minutes=5),
+        "retry_delay": timedelta(seconds=0),
     },
     tags=["weather", "morocco", "etl"],
 ) as dag:
-    extraction = PythonOperator(
-        task_id="extract_weather",
-        python_callable=extract,
-    )
+    # extraction = PythonOperator(
+    #     task_id="extract_weather",
+    #     python_callable=extract,
+    # )
     cleaning_and_joining = PythonOperator(
         task_id="clean_and_join",
         python_callable=clean_and_join,
@@ -62,4 +68,4 @@ with DAG(
         python_callable=refresh_dashboard_data,
     )
 
-    extraction >> cleaning_and_joining >> feature_engineering >> loading >> dashboard_refresh
+    cleaning_and_joining >> feature_engineering >> loading >> dashboard_refresh
