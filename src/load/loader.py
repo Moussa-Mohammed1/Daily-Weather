@@ -23,14 +23,15 @@ def load_data():
                     "longitude": row["longitude"]
                 }
             )
-            result = connection.execute(text("""
-                            SELECT id, name 
-                            FROM cities
-                        """))
 
-            city_map = { row.name: row.id for row in result}
-            for _, row in df.iterrows():
-                connection.execute(
+        result = connection.execute(text("""
+            SELECT id, name
+            FROM cities
+        """))
+        city_map = {row.name: row.id for row in result}
+
+        for _, row in df.iterrows():
+            connection.execute(
                 text("""
                     INSERT INTO weather_forecasts (
                         city_id,
@@ -88,28 +89,28 @@ def load_data():
                         risk_score = EXCLUDED.risk_score,
                         risk_level = EXCLUDED.risk_level
                 """),
-                {
-                    "city_id": city_map[row["city"]],
-                    "forecast_date": row["date"],
-                    "temperature_max": row["temperature_max"],
-                    "temperature_min": row["temperature_min"],
-                    "precipitation_sum": row["precipitation_sum"],
-                    "precipitation_probability": row["precipitation_probability"],
-                    "wind_speed_max": row["wind_speed_max"],
-                    "wind_gust_max": row["wind_gust_max"],
-                    "weather_code": row["weather_code"],
-                    "temperature_category": row["temperature_category"],
-                    "precipitation_category": row["precipitation_category"],
-                    "wind_category": row["wind_category"],
-                    "temperature_risk": row["temperature_risk"],
-                    "precipitation_risk": row["precipitation_risk"],
-                    "wind_risk": row["wind_risk"],
-                    "risk_score": row["risk_score"],
-                    "risk_level": row["risk_level"],
-                }
+            {
+                "city_id": city_map[row["city"]],
+                "forecast_date": row["date"],
+                "temperature_max": row["temperature_max"],
+                "temperature_min": row["temperature_min"],
+                "precipitation_sum": row["precipitation_sum"],
+                "precipitation_probability": row["precipitation_probability"],
+                "wind_speed_max": row["wind_speed_max"],
+                "wind_gust_max": row["wind_gust_max"],
+                "weather_code": row["weather_code"],
+                "temperature_category": row["temperature_category"],
+                "precipitation_category": row["precipitation_category"],
+                "wind_category": row["wind_category"],
+                "temperature_risk": row["temperature_risk"],
+                "precipitation_risk": row["precipitation_risk"],
+                "wind_risk": row["wind_risk"],
+                "risk_score": row["risk_score"],
+                "risk_level": row["risk_level"],
+            }
             )
 
-                print("Gold data loaded successfully!")
+        print("Gold data loaded successfully!")
 
 if __name__ == "__main__":
     load_data()
